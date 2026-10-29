@@ -1,3 +1,81 @@
+<div align="left">
+
+  <table>
+    <tr>
+      <td>
+        <img src="https://img.shields.io/badge/Release-v1.0.0-orange?style=for-the-badge&logo=github&logoColor=white" alt="Release v1.0.0" />
+      </td>
+      <td>
+        <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License MIT" />
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+<h1 align="left">
+  <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f680.svg" width="32" alt="rocket" />
+  Supply Chain & Inventory Intelligence Platform
+</h1>
+
+<p align="left">
+  <strong>
+    AI-powered inventory intelligence and predictive demand forecasting built for modern logistics and operational planning.
+  </strong>
+</p>
+
+<p>
+  Centralize sales, supplier, and inventory data, forecast demand by SKU, optimize reorder policies, and receive proactive risk alerts across your supply network.
+</p>
+
+<div align="left">
+  <img src="https://img.shields.io/badge/Live%20Demo-Streamlit%20Cloud-red?style=for-the-badge" alt="Live Demo" />
+  <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+" />
+  <img src="https://img.shields.io/badge/ML%20Engine-Scikit%20Learn-purple?style=for-the-badge" alt="ML Engine" />
+  <img src="https://img.shields.io/badge/Forecasting-Prophet-9cf?style=for-the-badge" alt="Prophet" />
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License" />
+</div>
+
+---
+
+## Overview
+
+This project helps teams:
+- analyze historical sales and demand patterns
+- forecast demand by SKU
+- calculate safety stock, EOQ, and reorder points
+- classify products with ABC/VED logic
+- detect stockout risk and operational alerts
+- simulate demand and lead time scenarios
+
+## Key Features
+
+- Demand forecasting with trend and seasonality analysis
+- Inventory optimization using operational constraints
+- Risk scoring and alerting for critical SKUs
+- Streamlit dashboard for business decision support
+- Exportable results for operational planning
+
+## Tech Stack
+
+- Python 3.10+
+- Streamlit
+- Pandas
+- NumPy
+- Scikit-learn
+- Prophet
+- Plotly
+- XGBoost
+
+## Getting Started
+
+```bash
+git clone https://github.com/crissnyx/supply_chain_microapp.git
+cd supply_chain_microapp
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-dev.txt
+streamlit run app.py
 # Supply Chain & Inventory Optimization Platform
 
 Production-ready Supply Chain & Inventory Optimization Platform featuring demand forecasting, ABC/VED analysis, Safety Stock, EOQ, and risk scenario evaluation.
