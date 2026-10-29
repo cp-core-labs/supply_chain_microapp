@@ -6,29 +6,46 @@ __pycache__/
 # Virtual environments
 .venv/
 venv/
-ENV/
 env/
+ENV/
 
-# Project cache
+# Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test & coverage
 .pytest_cache/
-.mypy_cache/
-.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
 
-# Mac / Windows junk
+# Editor / OS files
+.vscode/
+.idea/
+*.swp
+*.swo
 .DS_Store
-Thumbs.db
 
-# Environment files
+# Environment variables
 .env
 .env.*
+!.env.example
 
 # Jupyter / notebooks
 .ipynb_checkpoints/
 
-# Build artifacts
-build/
-dist/
-*.egg-info/
+# Logs
+*.log
+
+# Data artifacts
+data/*.csv
+!data/README.md
+!data/historical_sales.csv
+!data/suppliers_lead_time.csv
 
 # Streamlit
 .streamlit/
