@@ -1,0 +1,34 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Project cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Mac / Windows junk
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+
+# Jupyter / notebooks
+.ipynb_checkpoints/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Streamlit
+.streamlit/
