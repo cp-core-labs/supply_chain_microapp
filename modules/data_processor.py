@@ -193,13 +193,17 @@ def merge_supplier_context(
 
     return merged.sort_values(["sku", "date"]).reset_index(drop=True)
 
+
 def process_supply_chain_data(sales_path: str | Path, supplier_path: str | Path) -> dict:
     """
     Función principal que procesa los datos, realiza el merge seguro y calcula 
-    el resumen por SKU con clasificación ABC compatible con app.py.
+    el resumen por SKU con clasificación ABC compatible con app.py y tests.
     """
     sales_df = pd.read_csv(sales_path)
     supplier_df = pd.read_csv(supplier_path)
+    
+    sales_clean = clean_sales_dataframe(sales_df)
+    suppliers_clean = clean_supplier_dataframe(supplier_df)
     
     # Unir el contexto utilizando nuestra función blindada
     merged_data = merge_supplier_context(sales_df, supplier_df)
@@ -246,9 +250,11 @@ def process_supply_chain_data(sales_path: str | Path, supplier_path: str | Path)
     # Forzar explícitamente que la columna sea de tipo string y tenga nombre válido
     sku_summary["abc_class"] = sku_summary["abc_class"].astype(str)
 
-    # Retornar el diccionario completo con todas las llaves requeridas por el pipeline
+    # Retornar el diccionario exacto requerido por las pruebas unitarias
     return {
+        "sales_clean": sales_clean,
+        "suppliers_clean": suppliers_clean,
+        "merged": merged_data,
         "daily_sales": merged_data,
-        "merged_data": merged_data,
         "sku_summary": sku_summary
     }
