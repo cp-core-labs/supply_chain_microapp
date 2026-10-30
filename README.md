@@ -1,16 +1,18 @@
 <div align="left">
-
   <table>
     <tr>
       <td>
-        <img src="https://img.shields.io/badge/Release-v1.0.0-orange?style=for-the-badge&logo=github&logoColor=white" alt="Release v1.0.0" />
+        <a href="https://github.com/crissnyx/supply_chain_microapp/releases">
+          <img src="https://img.shields.io/badge/Release-v1.0.0-orange?style=for-the-badge&logo=github&logoColor=white" alt="Release v1.0.0" />
+        </a>
       </td>
       <td>
-        <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License MIT" />
+        <a href="https://github.com/crissnyx/supply_chain_microapp/blob/main/LICENSE">
+          <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License MIT" />
+        </a>
       </td>
     </tr>
   </table>
-
 </div>
 
 <h1 align="left">
@@ -20,84 +22,60 @@
 
 <p align="left">
   <strong>
-    AI-powered inventory intelligence and predictive demand forecasting built for modern logistics and operational planning.
+    AI-powered inventory intelligence, predictive demand forecasting, and operational planning built for modern logistics.
   </strong>
 </p>
 
 <p>
-  Centralize sales, supplier, and inventory data, forecast demand by SKU, optimize reorder policies, and receive proactive risk alerts across your supply network.
+  Production-ready Supply Chain & Inventory Optimization Platform featuring demand forecasting, ABC/VED analysis, Safety Stock, EOQ, and risk scenario evaluation. Centralize sales, supplier, and inventory data to make data-driven logistics decisions.
 </p>
 
 <div align="left">
-  <img src="https://img.shields.io/badge/Live%20Demo-Streamlit%20Cloud-red?style=for-the-badge" alt="Live Demo" />
-  <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+" />
-  <img src="https://img.shields.io/badge/ML%20Engine-Scikit%20Learn-purple?style=for-the-badge" alt="ML Engine" />
-  <img src="https://img.shields.io/badge/Forecasting-Prophet-9cf?style=for-the-badge" alt="Prophet" />
-  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License" />
+  <a href="https://your-streamlit-cloud-url.streamlit.app/">
+    <img src="https://img.shields.io/badge/LIVE_DEMO-Streamlit%20Cloud-red?style=for-the-badge" alt="Live Demo" />
+  </a>
+
+  <a href="https://streamlit.io/">
+    <img src="https://img.shields.io/badge/Streamlit-Cloud-orange?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit" />
+  </a>
+
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+" />
+  </a>
+
+  <a href="https://scikit-learn.org/stable/">
+    <img src="https://img.shields.io/badge/ML_Engine-Scikit%20Learn-purple?style=for-the-badge" alt="Scikit Learn" />
+  </a>
+
+  <a href="https://facebook.github.io/prophet/">
+    <img src="https://img.shields.io/badge/Forecasting-Prophet-9cf?style=for-the-badge" alt="Prophet" />
+  </a>
+
+  <a href="https://github.com/crissnyx/supply_chain_microapp/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License" />
+  </a>
 </div>
 
 ---
 
 ## Overview
 
-This project helps teams:
-- analyze historical sales and demand patterns
-- forecast demand by SKU
-- calculate safety stock, EOQ, and reorder points
-- classify products with ABC/VED logic
-- detect stockout risk and operational alerts
-- simulate demand and lead time scenarios
-
-## Key Features
-
-- Demand forecasting with trend and seasonality analysis
-- Inventory optimization using operational constraints
-- Risk scoring and alerting for critical SKUs
-- Streamlit dashboard for business decision support
-- Exportable results for operational planning
-
-## Tech Stack
-
-- Python 3.10+
-- Streamlit
-- Pandas
-- NumPy
-- Scikit-learn
-- Prophet
-- Plotly
-- XGBoost
-
-## Getting Started
-
-```bash
-git clone https://github.com/crissnyx/supply_chain_microapp.git
-cd supply_chain_microapp
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements-dev.txt
-streamlit run app.py
-# Supply Chain & Inventory Optimization Platform
-
-Production-ready Supply Chain & Inventory Optimization Platform featuring demand forecasting, ABC/VED analysis, Safety Stock, EOQ, and risk scenario evaluation.
-
-## Overview
-
 This application is designed to support supply chain decision-making through:
-- Historical sales analysis
+- Historical sales and demand pattern analysis
 - Demand forecasting by SKU
-- Inventory optimization
-- ABC/VED classification
-- Safety stock and reorder point planning
-- Operational risk evaluation
-- Scenario simulation
+- Inventory optimization and reorder policies
+- ABC/VED classification logic
+- Safety stock and economic order quantity (EOQ) planning
+- Operational risk evaluation and proactive alerting
+- Scenario and lead time simulation
 
 *Note: This is a decision-support analytic dashboard focused on inventory and operational intelligence.*
 
 ## Main Features
 
-- **Demand Forecasting by SKU:** Predict future requirements accurately.
+- **Demand Forecasting by SKU:** Predict future requirements accurately using machine learning.
 - **ABC/VED Segmentation:** Prioritize inventory based on financial value and operational criticality.
-- **Safety Stock & EOQ Calculations:** Optimize reorder points and order quantities to balance carrying costs.
+- **Safety Stock & EOQ Calculations:** Optimize reorder points and order quantities to balance holding and stockout costs.
 - **Operational Risk Alerts:** Proactively identify potential stockouts and supply disruptions.
 - **What-if Scenario Analysis:** Simulate operational risk scenarios and supply variations.
 - **CSV Export:** Download planning insights for external decision-making workflows.
@@ -134,7 +112,7 @@ supply_chain_microapp/
 │   └── README.md
 ├── docs/
 │   ├── architecture.md
-│   ├── deployment.md
+│   ️├── deployment.md
 │   └── data_dictionary.md
 ├── modules/
 │   ├── __init__.py
