@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-import pandas as pd
 from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Optional
+
+import pandas as pd
 
 
 def _safe_pick_column(df: pd.DataFrame, candidates: list[str]) -> Optional[str]:
@@ -196,18 +197,18 @@ def merge_supplier_context(
 
 def process_supply_chain_data(sales_path: str | Path, supplier_path: str | Path) -> dict:
     """
-    Función principal que procesa los datos, realiza el merge seguro y calcula 
+    Función principal que procesa los datos, realiza el merge seguro y calcula
     el resumen por SKU con clasificación ABC compatible con app.py y tests.
     """
     sales_df = pd.read_csv(sales_path)
     supplier_df = pd.read_csv(supplier_path)
-    
+
     sales_clean = clean_sales_dataframe(sales_df)
     suppliers_clean = clean_supplier_dataframe(supplier_df)
-    
+
     # Unir el contexto utilizando nuestra función blindada
     merged_data = merge_supplier_context(sales_df, supplier_df)
-    
+
     # Crear un resumen por SKU con clasificación ABC basada en valor de ventas (Revenue)
     if "sku" in merged_data.columns:
         agg_dict = {
@@ -215,12 +216,19 @@ def process_supply_chain_data(sales_path: str | Path, supplier_path: str | Path)
             "unit_price": "mean",
             "unit_cost": "mean",
         }
-        for col in ["avg_lead_time_days", "lead_time_std_days", "service_level_target", "on_time_delivery_rate", "shipping_cost_per_unit", "risk_factor"]:
+        for col in [
+            "avg_lead_time_days",
+            "lead_time_std_days",
+            "service_level_target",
+            "on_time_delivery_rate",
+            "shipping_cost_per_unit",
+            "risk_factor",
+        ]:
             if col in merged_data.columns:
                 agg_dict[col] = "first"
 
         sku_summary = merged_data.groupby("sku").agg(agg_dict).reset_index()
-        
+
         # Calcular ingresos totales por SKU para la clasificación ABC
         if "units_sold" in sku_summary.columns and "unit_price" in sku_summary.columns:
             sku_summary["total_revenue"] = sku_summary["units_sold"] * sku_summary["unit_price"]
@@ -228,8 +236,10 @@ def process_supply_chain_data(sales_path: str | Path, supplier_path: str | Path)
             sku_summary["total_revenue"] = 1.0
 
         # Ordenar descendentemente por ingresos
-        sku_summary = sku_summary.sort_values(by="total_revenue", ascending=False).reset_index(drop=True)
-        
+        sku_summary = sku_summary.sort_values(by="total_revenue", ascending=False).reset_index(
+            drop=True
+        )
+
         # Asignar clasificación ABC estándar de forma explícita
         total_rev = sku_summary["total_revenue"].sum()
         if total_rev > 0:
@@ -256,5 +266,5 @@ def process_supply_chain_data(sales_path: str | Path, supplier_path: str | Path)
         "suppliers_clean": suppliers_clean,
         "merged": merged_data,
         "daily_sales": merged_data,
-        "sku_summary": sku_summary
+        "sku_summary": sku_summary,
     }

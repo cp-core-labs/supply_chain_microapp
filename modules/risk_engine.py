@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pandas as pd
-import numpy as np
 
 
 def build_alerts(inventory_df: pd.DataFrame) -> pd.DataFrame:
@@ -38,7 +37,9 @@ def build_alerts(inventory_df: pd.DataFrame) -> pd.DataFrame:
         lambda x: "Urgente" if x > 70 else ("Prioridad media" if x > 40 else "Normal")
     )
 
-    return df.sort_values(["priority_score", "risk_score"], ascending=[False, False]).reset_index(drop=True)
+    return df.sort_values(["priority_score", "risk_score"], ascending=[False, False]).reset_index(
+        drop=True
+    )
 
 
 def evaluate_what_if_scenario(
@@ -70,7 +71,13 @@ def evaluate_what_if_scenario(
     # Recalcular seguridad bajo nuevo escenario
     df["scenario_safety_stock"] = df.apply(
         lambda row: (
-            max(0.0, row["scenario_avg_daily_demand"] * row["demand_std"] * row["scenario_lead_time_days"]) * 0.8
+            max(
+                0.0,
+                row["scenario_avg_daily_demand"]
+                * row["demand_std"]
+                * row["scenario_lead_time_days"],
+            )
+            * 0.8
         ),
         axis=1,
     )
@@ -84,9 +91,7 @@ def evaluate_what_if_scenario(
     avg_lead_time_safe = df["avg_lead_time_days"].clip(lower=1)
     df["scenario_risk_score"] = (
         df["stockout_probability"] * 100 * (1.0 + abs(demand_change_pct))
-    ) + (
-        (lead_time_factor / avg_lead_time_safe) * 35
-    )
+    ) + ((lead_time_factor / avg_lead_time_safe) * 35)
 
     df["scenario_alert_level"] = df["scenario_risk_score"].apply(
         lambda x: "Rojo" if x > 70 else ("Amarillo" if x > 45 else "Verde")

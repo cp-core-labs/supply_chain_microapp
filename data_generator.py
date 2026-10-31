@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-import numpy as np
-import pandas as pd
 from pathlib import Path
 from typing import Dict, List
+
+import numpy as np
+import pandas as pd
 
 
 def generate_supplier_master() -> pd.DataFrame:
@@ -252,7 +253,14 @@ def generate_synthetic_supply_chain_data(
 
             # Ruido aleatorio
             noise = rng.normal(0, noise_sigma)
-            demand = base_demand * trend_factor * monthly_factor * weekday_factor * promo_factor * (1 + noise)
+            demand = (
+                base_demand
+                * trend_factor
+                * monthly_factor
+                * weekday_factor
+                * promo_factor
+                * (1 + noise)
+            )
 
             # Evita demanda negativa
             demand = max(0.0, demand)

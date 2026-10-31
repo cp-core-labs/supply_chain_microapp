@@ -16,7 +16,6 @@ from modules.forecaster import forecast_all_skus
 from modules.inventory_optimizer import build_inventory_plan
 from modules.risk_engine import build_alerts, build_risk_summary, evaluate_what_if_scenario
 
-
 st.set_page_config(
     page_title="Supply Chain Micro App",
     page_icon="📦",
@@ -243,7 +242,14 @@ def render_overview(inventory_df: pd.DataFrame):
             x="alert_level",
             y="total_risk_score",
             color="alert_level",
-            color_discrete_map={"Green": "#22c55e", "Yellow": "#f59e0b", "Red": "#ef4444", "Verde": "#22c55e", "Amarillo": "#f59e0b", "Rojo": "#ef4444"},
+            color_discrete_map={
+                "Green": "#22c55e",
+                "Yellow": "#f59e0b",
+                "Red": "#ef4444",
+                "Verde": "#22c55e",
+                "Amarillo": "#f59e0b",
+                "Rojo": "#ef4444",
+            },
             title="Operational Risk by Alert Level",
         )
         fig_risk.update_layout(
@@ -307,7 +313,9 @@ def render_forecast(processed_data: dict, forecast_df: pd.DataFrame):
         )
         st.plotly_chart(fig, use_container_width=True)
     else:
-        st.line_chart(sku_forecast.set_index("date")[["forecast_units", "lower_bound", "upper_bound"]])
+        st.line_chart(
+            sku_forecast.set_index("date")[["forecast_units", "lower_bound", "upper_bound"]]
+        )
 
     st.dataframe(
         sku_forecast.tail(15)[
@@ -390,13 +398,16 @@ def render_scenarios(inventory_df: pd.DataFrame):
     st.subheader("Scenario Analysis")
 
     col1, col2 = st.columns(2)
-    demand_change_pct = col1.slider(
-        "Demand Change (%)",
-        min_value=-50,
-        max_value=50,
-        value=20,
-        step=5,
-    ) / 100.0
+    demand_change_pct = (
+        col1.slider(
+            "Demand Change (%)",
+            min_value=-50,
+            max_value=50,
+            value=20,
+            step=5,
+        )
+        / 100.0
+    )
 
     lead_time_change_days = col2.slider(
         "Lead Time Change (days)",
@@ -519,7 +530,7 @@ def main():
 
     forecast_df = compute_forecast_pipeline(daily_sales, horizon=forecast_horizon)
     raw_inventory_df = compute_inventory_pipeline(processed_data, service_level=service_level)
-    
+
     inventory_df = build_alerts(raw_inventory_df)
     alerts_df = inventory_df
 

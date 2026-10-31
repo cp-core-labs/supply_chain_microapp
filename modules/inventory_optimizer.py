@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-from typing import Dict, List, Optional
+from typing import Dict
 
 import numpy as np
 import pandas as pd
@@ -119,7 +119,9 @@ def days_of_coverage(current_inventory: float, avg_daily_demand: float) -> float
     return max(0.0, current_inventory / avg_daily_demand)
 
 
-def assign_abc_classification(df: pd.DataFrame, value_col: str = "annual_dollar_usage", sku_col: str = "sku") -> pd.DataFrame:
+def assign_abc_classification(
+    df: pd.DataFrame, value_col: str = "annual_dollar_usage", sku_col: str = "sku"
+) -> pd.DataFrame:
     """
     Asigna clase ABC usando Pareto:
     - A: 80% acumulado
@@ -156,7 +158,9 @@ def assign_abc_classification(df: pd.DataFrame, value_col: str = "annual_dollar_
     return out
 
 
-def assign_ved_classification(df: pd.DataFrame, criticality_col: str = "criticality", sku_col: str = "sku") -> pd.DataFrame:
+def assign_ved_classification(
+    df: pd.DataFrame, criticality_col: str = "criticality", sku_col: str = "sku"
+) -> pd.DataFrame:
     """
     Clasifica por criticidad tipo VED:
     - V = Vital
@@ -209,7 +213,7 @@ def simulate_lead_time_uncertainty(
 
         # Demanda durante el lead time
         average_demand = avg_daily_demand * lead_time_sample
-        demand_variance = (lead_time_sample * demand_std ** 2)
+        demand_variance = lead_time_sample * demand_std**2
         demand_sample = rng.normal(average_demand, math.sqrt(max(demand_variance, 0.0)))
 
         demand_values.append(demand_sample)
@@ -261,7 +265,14 @@ def build_inventory_plan(
 
     for col in required_cols:
         if col not in df.columns:
-            if col in ["demand_std", "lead_time_std_days", "avg_lead_time_days", "avg_daily_demand", "avg_unit_price", "service_level_target"]:
+            if col in [
+                "demand_std",
+                "lead_time_std_days",
+                "avg_lead_time_days",
+                "avg_daily_demand",
+                "avg_unit_price",
+                "service_level_target",
+            ]:
                 df[col] = 0.0
             else:
                 df[col] = ""
@@ -271,7 +282,9 @@ def build_inventory_plan(
     df["avg_lead_time_days"] = pd.to_numeric(df["avg_lead_time_days"], errors="coerce").fillna(0.0)
     df["lead_time_std_days"] = pd.to_numeric(df["lead_time_std_days"], errors="coerce").fillna(0.0)
     df["avg_unit_price"] = pd.to_numeric(df["avg_unit_price"], errors="coerce").fillna(0.0)
-    df["service_level_target"] = pd.to_numeric(df["service_level_target"], errors="coerce").fillna(0.95)
+    df["service_level_target"] = pd.to_numeric(df["service_level_target"], errors="coerce").fillna(
+        0.95
+    )
 
     # Anual demand
     df["annual_demand"] = df["avg_daily_demand"] * 365.0
@@ -339,15 +352,16 @@ def build_inventory_plan(
 
     sim_df = pd.DataFrame(simulation_rows)
     df["stockout_probability"] = sim_df["stockout_probability"].values
-    df["risk_score"] = (
-        (df["stockout_probability"] * 100) * 0.7
-        + (1 / (df["days_of_coverage"] + 1)) * 100 * 0.3
-    )
+    df["risk_score"] = (df["stockout_probability"] * 100) * 0.7 + (
+        1 / (df["days_of_coverage"] + 1)
+    ) * 100 * 0.3
 
     if "supplier_code" in df.columns:
         df["supplier_code"] = df["supplier_code"].fillna("UNKNOWN")
 
-    return df.sort_values(["risk_score", "annual_dollar_usage"], ascending=[False, False]).reset_index(drop=True)
+    return df.sort_values(
+        ["risk_score", "annual_dollar_usage"], ascending=[False, False]
+    ).reset_index(drop=True)
 
 
 def summarize_inventory_by_category(df: pd.DataFrame) -> pd.DataFrame:
@@ -410,4 +424,16 @@ if __name__ == "__main__":
     }
 
     plan = build_inventory_plan(d, service_level=0.95)
-    print(plan[["sku", "abc_class", "ved_class", "safety_stock", "reorder_point", "eoq", "stockout_probability"]])
+    print(
+        plan[
+            [
+                "sku",
+                "abc_class",
+                "ved_class",
+                "safety_stock",
+                "reorder_point",
+                "eoq",
+                "stockout_probability",
+            ]
+        ]
+    )

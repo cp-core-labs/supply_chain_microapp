@@ -1,6 +1,6 @@
 import pandas as pd
 
-from modules.risk_engine import build_alerts, evaluate_what_if_scenario, build_risk_summary
+from modules.risk_engine import build_alerts, build_risk_summary, evaluate_what_if_scenario
 
 
 def build_inventory_sample():

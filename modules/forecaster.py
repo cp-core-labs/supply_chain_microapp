@@ -5,7 +5,6 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
-
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 try:
@@ -46,7 +45,9 @@ def _safe_mase(y_true: np.ndarray, y_pred: np.ndarray, train_series: np.ndarray)
     return float(mae / denom)
 
 
-def _compute_metrics(y_true: np.ndarray, y_pred: np.ndarray, train_series: np.ndarray) -> Dict[str, float]:
+def _compute_metrics(
+    y_true: np.ndarray, y_pred: np.ndarray, train_series: np.ndarray
+) -> Dict[str, float]:
     y_true = np.asarray(y_true, dtype=float)
     y_pred = np.asarray(y_pred, dtype=float)
 
@@ -112,7 +113,9 @@ def holt_winters_forecast(train_series: pd.Series, horizon: int) -> np.ndarray:
         return naive_forecast(s, horizon)
 
 
-def prophet_forecast(train_series: pd.Series, horizon: int, dates: Optional[pd.DatetimeIndex] = None) -> np.ndarray:
+def prophet_forecast(
+    train_series: pd.Series, horizon: int, dates: Optional[pd.DatetimeIndex] = None
+) -> np.ndarray:
     if Prophet is None:
         return naive_forecast(train_series, horizon)
 
@@ -124,10 +127,12 @@ def prophet_forecast(train_series: pd.Series, horizon: int, dates: Optional[pd.D
         start_date = pd.Timestamp("2023-01-01")
         dates = pd.date_range(start=start_date, periods=len(s), freq="D")
 
-    df = pd.DataFrame({
-        "ds": dates[:len(s)],
-        "y": s.to_numpy(),
-    })
+    df = pd.DataFrame(
+        {
+            "ds": dates[: len(s)],
+            "y": s.to_numpy(),
+        }
+    )
 
     try:
         model = Prophet(
@@ -150,13 +155,31 @@ def _prepare_xgb_features(history_values: pd.Series, future_date: pd.Timestamp) 
     values = history_values.astype(float).to_numpy()
 
     lag_1 = float(values[-1]) if len(values) >= 1 else 0.0
-    lag_7 = float(values[-7]) if len(values) >= 7 else float(values[-1]) if len(values) >= 1 else 0.0
-    lag_14 = float(values[-14]) if len(values) >= 14 else float(values[-1]) if len(values) >= 1 else 0.0
-    lag_30 = float(values[-30]) if len(values) >= 30 else float(values[-1]) if len(values) >= 1 else 0.0
+    lag_7 = (
+        float(values[-7]) if len(values) >= 7 else float(values[-1]) if len(values) >= 1 else 0.0
+    )
+    lag_14 = (
+        float(values[-14]) if len(values) >= 14 else float(values[-1]) if len(values) >= 1 else 0.0
+    )
+    lag_30 = (
+        float(values[-30]) if len(values) >= 30 else float(values[-1]) if len(values) >= 1 else 0.0
+    )
 
-    rolling_3 = float(np.mean(values[-3:])) if len(values) >= 3 else float(np.mean(values)) if len(values) > 0 else 0.0
-    rolling_7 = float(np.mean(values[-7:])) if len(values) >= 7 else float(np.mean(values)) if len(values) > 0 else 0.0
-    rolling_14 = float(np.mean(values[-14:])) if len(values) >= 14 else float(np.mean(values)) if len(values) > 0 else 0.0
+    rolling_3 = (
+        float(np.mean(values[-3:]))
+        if len(values) >= 3
+        else float(np.mean(values)) if len(values) > 0 else 0.0
+    )
+    rolling_7 = (
+        float(np.mean(values[-7:]))
+        if len(values) >= 7
+        else float(np.mean(values)) if len(values) > 0 else 0.0
+    )
+    rolling_14 = (
+        float(np.mean(values[-14:]))
+        if len(values) >= 14
+        else float(np.mean(values)) if len(values) > 0 else 0.0
+    )
 
     std_7 = float(np.std(values[-7:])) if len(values) >= 2 else 0.0
     std_14 = float(np.std(values[-14:])) if len(values) >= 2 else 0.0
@@ -171,10 +194,10 @@ def _prepare_xgb_features(history_values: pd.Series, future_date: pd.Timestamp) 
         "rolling_mean_14": rolling_14,
         "rolling_std_7": std_7,
         "rolling_std_14": std_14,
-        "day_of_week": float(future_date.dayofweek),
+        "day_of_week": float(future_date.day_of_week),
         "month": float(future_date.month),
-        "day_of_year": float(future_date.dayofyear),
-        "is_weekend": float(int(future_date.dayofweek >= 5)),
+        "day_of_year": float(future_date.day_of_year),
+        "is_weekend": float(int(future_date.day_of_week >= 5)),
     }
 
 
@@ -240,7 +263,9 @@ def xgboost_forecast(train_series: pd.Series, horizon: int) -> np.ndarray:
         return naive_forecast(s, horizon)
 
 
-def _fit_model_and_predict(model_name: str, train_series: pd.Series, horizon: int, dates: Optional[pd.DatetimeIndex] = None) -> np.ndarray:
+def _fit_model_and_predict(
+    model_name: str, train_series: pd.Series, horizon: int, dates: Optional[pd.DatetimeIndex] = None
+) -> np.ndarray:
     if model_name == "naive":
         return naive_forecast(train_series, horizon)
     if model_name == "moving_average":
@@ -254,14 +279,16 @@ def _fit_model_and_predict(model_name: str, train_series: pd.Series, horizon: in
     raise ValueError(f"Modelo no soportado: {model_name}")
 
 
-def evaluate_model_on_validation(model_name: str, series: pd.Series, horizon: int) -> Dict[str, object]:
+def evaluate_model_on_validation(
+    model_name: str, series: pd.Series, horizon: int
+) -> Dict[str, object]:
     series = pd.Series(series).astype(float).copy()
     if len(series) < 10:
         raise ValueError("La serie es demasiado corta para evaluación.")
 
     train_size, validation_size = _resolve_validation_split(series, horizon)
     train = series.iloc[:train_size].copy()
-    valid = series.iloc[train_size:train_size + validation_size].copy()
+    valid = series.iloc[train_size : train_size + validation_size].copy()
 
     if valid.empty:
         raise ValueError("No se pudo crear una validación útil.")
@@ -273,7 +300,7 @@ def evaluate_model_on_validation(model_name: str, series: pd.Series, horizon: in
         forecast = np.resize(forecast, len(valid))
 
     y_true = valid.to_numpy(dtype=float)
-    y_pred = np.asarray(forecast[:len(valid)], dtype=float)
+    y_pred = np.asarray(forecast[: len(valid)], dtype=float)
     metrics = _compute_metrics(y_true, y_pred, train.to_numpy(dtype=float))
 
     return {
@@ -285,7 +312,9 @@ def evaluate_model_on_validation(model_name: str, series: pd.Series, horizon: in
     }
 
 
-def select_best_model(series: pd.Series, horizon: int, candidate_models: Optional[List[str]] = None) -> Dict[str, object]:
+def select_best_model(
+    series: pd.Series, horizon: int, candidate_models: Optional[List[str]] = None
+) -> Dict[str, object]:
     if candidate_models is None:
         candidate_models = ["naive", "moving_average", "holt_winters"]
         if Prophet is not None:
@@ -316,7 +345,9 @@ def select_best_model(series: pd.Series, horizon: int, candidate_models: Optiona
     return selected
 
 
-def _build_confidence_intervals(forecast: np.ndarray, historical_series: pd.Series) -> Tuple[np.ndarray, np.ndarray]:
+def _build_confidence_intervals(
+    forecast: np.ndarray, historical_series: pd.Series
+) -> Tuple[np.ndarray, np.ndarray]:
     forecast = np.asarray(forecast, dtype=float)
     hist = historical_series.astype(float).to_numpy()
 
@@ -324,7 +355,9 @@ def _build_confidence_intervals(forecast: np.ndarray, historical_series: pd.Seri
         return forecast, forecast
 
     residuals = np.diff(hist)
-    residual_std = float(np.std(residuals, ddof=0)) if residuals.size > 0 else float(np.std(hist, ddof=0))
+    residual_std = (
+        float(np.std(residuals, ddof=0)) if residuals.size > 0 else float(np.std(hist, ddof=0))
+    )
     if residual_std < 1e-8:
         residual_std = float(np.std(hist, ddof=0)) if hist.size > 0 else 1.0
     if residual_std < 1e-8:
@@ -340,7 +373,9 @@ def _build_confidence_intervals(forecast: np.ndarray, historical_series: pd.Seri
     return lower, upper
 
 
-def generate_future_forecast(series: pd.Series, horizon: int, model_name: str, dates: Optional[pd.DatetimeIndex] = None) -> Tuple[np.ndarray, pd.DatetimeIndex]:
+def generate_future_forecast(
+    series: pd.Series, horizon: int, model_name: str, dates: Optional[pd.DatetimeIndex] = None
+) -> Tuple[np.ndarray, pd.DatetimeIndex]:
     s = pd.Series(series).astype(float).copy()
 
     if dates is None:
@@ -390,16 +425,22 @@ def forecast_sku(
 
     lower, upper = _build_confidence_intervals(future_forecast, series)
 
-    future_df = pd.DataFrame({
-        "date": future_dates,
-        "sku": sku_code,
-        "forecast_units": np.round(future_forecast, 2),
-        "lower_bound": np.round(lower, 2),
-        "upper_bound": np.round(upper, 2),
-        "selected_model": selected_model,
-    })
+    future_df = pd.DataFrame(
+        {
+            "date": future_dates,
+            "sku": sku_code,
+            "forecast_units": np.round(future_forecast, 2),
+            "lower_bound": np.round(lower, 2),
+            "upper_bound": np.round(upper, 2),
+            "selected_model": selected_model,
+        }
+    )
 
-    history_df = sku_df[["date", "sku", "units_sold"]].rename(columns={"units_sold": "forecast_units"}).copy()
+    history_df = (
+        sku_df[["date", "sku", "units_sold"]]
+        .rename(columns={"units_sold": "forecast_units"})
+        .copy()
+    )
     history_df["lower_bound"] = np.nan
     history_df["upper_bound"] = np.nan
     history_df["selected_model"] = "historical"
@@ -411,10 +452,12 @@ def forecast_sku(
     for model_name in candidate_models:
         try:
             eval_result = evaluate_model_on_validation(model_name, series, horizon)
-            evaluation_results.append({
-                "model": model_name,
-                "metrics": eval_result["metrics"],
-            })
+            evaluation_results.append(
+                {
+                    "model": model_name,
+                    "metrics": eval_result["metrics"],
+                }
+            )
         except Exception:
             continue
 
@@ -438,7 +481,9 @@ def forecast_all_skus(
 ) -> pd.DataFrame:
     daily_sales_df = daily_sales_df.copy()
     daily_sales_df["date"] = pd.to_datetime(daily_sales_df["date"], errors="coerce")
-    daily_sales_df = daily_sales_df.dropna(subset=["date"]).sort_values(["sku", "date"]).reset_index(drop=True)
+    daily_sales_df = (
+        daily_sales_df.dropna(subset=["date"]).sort_values(["sku", "date"]).reset_index(drop=True)
+    )
 
     if daily_sales_df.empty:
         raise ValueError("No hay datos de ventas para forecast.")

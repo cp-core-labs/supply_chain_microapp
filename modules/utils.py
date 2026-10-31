@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import math
 from typing import Any
 
 import numpy as np
@@ -59,7 +58,9 @@ def series_is_valid(series: pd.Series) -> bool:
     return not cleaned.empty
 
 
-def percentile_interval(values: np.ndarray, lower_pct: float = 0.10, upper_pct: float = 0.90) -> tuple[np.ndarray, np.ndarray]:
+def percentile_interval(
+    values: np.ndarray, lower_pct: float = 0.10, upper_pct: float = 0.90
+) -> tuple[np.ndarray, np.ndarray]:
     arr = np.asarray(values, dtype=float)
     if arr.size == 0:
         return arr, arr
@@ -74,7 +75,9 @@ def safe_divide(numerator: float, denominator: float, default: float = 0.0) -> f
     return numerator / denominator
 
 
-def round_numeric_df(df: pd.DataFrame, cols: list[str] | None = None, decimals: int = 2) -> pd.DataFrame:
+def round_numeric_df(
+    df: pd.DataFrame, cols: list[str] | None = None, decimals: int = 2
+) -> pd.DataFrame:
     out = df.copy()
     if cols is None:
         cols = out.select_dtypes(include=["number"]).columns.tolist()
