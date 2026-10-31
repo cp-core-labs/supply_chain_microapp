@@ -1,42 +1,29 @@
 <div align="left">
-  <table>
-    <tr>
-      <td>
-        <a href="https://github.com/crissnyx/supply_chain_microapp/releases">
-          <img src="https://img.shields.io/badge/Release-v1.0.0-orange?style=for-the-badge&logo=github&logoColor=white" alt="Release v1.0.0" />
-        </a>
-      </td>
-      <td>
-        <a href="https://github.com/crissnyx/supply_chain_microapp/blob/main/LICENSE">
-          <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License MIT" />
-        </a>
-      </td>
-    </tr>
-  </table>
+  <a href="https://github.com/crissnyx/supply_chain_microapp/releases">
+    <img src="https://img.shields.io/badge/Release-v1.0.0-orange?style=for-the-badge&logo=github&logoColor=white" alt="Release v1.0.0" />
+  </a>
+
+  <a href="https://github.com/crissnyx/supply_chain_microapp/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License" />
+  </a>
 </div>
 
 <h1 align="left">
-  <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f680.svg" width="32" alt="rocket" />
+  <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f680.svg" width="42" alt="rocket" />
   Supply Chain & Inventory Intelligence Platform
 </h1>
 
 <p align="left">
-  <strong>
-    AI-powered inventory intelligence, predictive demand forecasting, and operational planning built for modern logistics.
-  </strong>
+  AI-powered inventory intelligence and predictive demand forecasting built for modern logistics and operational planning.
 </p>
 
-<p>
-  Production-ready Supply Chain & Inventory Optimization Platform featuring demand forecasting, ABC/VED analysis, Safety Stock, EOQ, and risk scenario evaluation. Centralize sales, supplier, and inventory data to make data-driven logistics decisions.
+<p align="left">
+  Centralize sales, supplier, and inventory data, forecast demand by SKU, optimize reorder policies, and receive proactive risk alerts across your supply network.
 </p>
 
 <div align="left">
-  <a href="https://your-streamlit-cloud-url.streamlit.app/">
+  <a href="https://supply-chain-microapp.streamlit.app/">
     <img src="https://img.shields.io/badge/LIVE_DEMO-Streamlit%20Cloud-red?style=for-the-badge" alt="Live Demo" />
-  </a>
-
-  <a href="https://streamlit.io/">
-    <img src="https://img.shields.io/badge/Streamlit-Cloud-orange?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit" />
   </a>
 
   <a href="https://www.python.org/">
@@ -44,15 +31,11 @@
   </a>
 
   <a href="https://scikit-learn.org/stable/">
-    <img src="https://img.shields.io/badge/ML_Engine-Scikit%20Learn-purple?style=for-the-badge" alt="Scikit Learn" />
+    <img src="https://img.shields.io/badge/ML_Engine-Scikit%20Learn-purple?style=for-the-badge" alt="ML Engine" />
   </a>
 
   <a href="https://facebook.github.io/prophet/">
     <img src="https://img.shields.io/badge/Forecasting-Prophet-9cf?style=for-the-badge" alt="Prophet" />
-  </a>
-
-  <a href="https://github.com/crissnyx/supply_chain_microapp/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License" />
   </a>
 </div>
 
@@ -112,7 +95,7 @@ supply_chain_microapp/
 │   └── README.md
 ├── docs/
 │   ├── architecture.md
-│   ️├── deployment.md
+│   ├── deployment.md
 │   └── data_dictionary.md
 ├── modules/
 │   ├── __init__.py
