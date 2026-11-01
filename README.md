@@ -57,6 +57,7 @@ This application is designed to support supply chain decision-making through:
 ## Main Features
 
 - **Demand Forecasting by SKU:** Predict future requirements accurately using machine learning.
+- **Lazy Loading & Performance Optimization:** On-demand execution flow for heavy forecast calculations using `st.session_state` to ensure sub-second UI responsiveness.
 - **ABC/VED Segmentation:** Prioritize inventory based on financial value and operational criticality.
 - **Safety Stock & EOQ Calculations:** Optimize reorder points and order quantities to balance holding and stockout costs.
 - **Operational Risk Alerts:** Proactively identify potential stockouts and supply disruptions.

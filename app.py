@@ -155,7 +155,7 @@ st.markdown(
 
 
 # ==========================================================
-# Data loading
+# Data loading & Pipelines with Cache
 # ==========================================================
 @st.cache_data
 def load_or_generate_data() -> dict:
@@ -285,11 +285,38 @@ def render_overview(inventory_df: pd.DataFrame):
     st.dataframe(display_df, use_container_width=True, height=420)
 
 
-def render_forecast(processed_data: dict, forecast_df: pd.DataFrame):
+def render_forecast_tab(processed_data: dict, horizon: int):
+    daily_sales = processed_data["daily_sales"]
+
+    if "forecast_df" not in st.session_state:
+        st.session_state.forecast_df = None
+
+    if "forecast_generated" not in st.session_state:
+        st.session_state.forecast_generated = False
+
     st.subheader("Demand Forecast")
 
-    daily_sales = processed_data["daily_sales"]
-    sku_list = sorted(daily_sales["sku"].unique())
+    col1, col2 = st.columns([3, 1])
+    with col2:
+        if st.button("Generate Forecast", use_container_width=True):
+            with st.spinner("Calculating forecasts for all SKUs..."):
+                st.session_state.forecast_df = compute_forecast_pipeline(daily_sales, horizon=horizon)
+                st.session_state.forecast_generated = True
+                st.rerun()
+
+        if st.session_state.forecast_generated:
+            if st.button("Refresh Forecast", use_container_width=True):
+                with st.spinner("Updating forecasts..."):
+                    st.session_state.forecast_df = compute_forecast_pipeline(daily_sales, horizon=horizon)
+                    st.session_state.forecast_generated = True
+                    st.rerun()
+
+    if not st.session_state.forecast_generated or st.session_state.forecast_df is None:
+        st.info("Click 'Generate Forecast' to calculate demand per SKU on demand.")
+        return
+
+    forecast_df = st.session_state.forecast_df
+    sku_list = sorted(forecast_df["sku"].unique())
     selected_sku = st.selectbox("Select a SKU", sku_list)
 
     sku_forecast = forecast_df[forecast_df["sku"] == selected_sku].sort_values("date")
@@ -528,16 +555,14 @@ def main():
 
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
-    forecast_df = compute_forecast_pipeline(daily_sales, horizon=forecast_horizon)
     raw_inventory_df = compute_inventory_pipeline(processed_data, service_level=service_level)
-
     inventory_df = build_alerts(raw_inventory_df)
     alerts_df = inventory_df
 
     if active_section == "Overview":
         render_overview(inventory_df)
     elif active_section == "Forecast":
-        render_forecast(processed_data, forecast_df)
+        render_forecast_tab(processed_data, horizon=forecast_horizon)
     elif active_section == "Inventory":
         render_inventory(inventory_df)
     elif active_section == "Risk":
